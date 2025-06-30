@@ -1,0 +1,158 @@
+<?php
+
+namespace App\Controllers;
+
+use App\Controllers\BaseController;
+use App\Models\CounselingModel;
+use App\Models\CategoryModel;
+use App\Models\StudentModel;
+use App\Models\UserModel;
+
+class CounselingController extends BaseController
+{
+    protected $counselingModel;
+    protected $categoryModel;
+    protected $studentModel;
+    protected $userModel;
+
+    public function __construct()
+    {
+        $this->counselingModel = new CounselingModel();
+        $this->categoryModel = new CategoryModel();
+        $this->studentModel = new StudentModel();
+        $this->userModel = new UserModel();
+        helper(['url', 'form']);
+    }
+
+    public function index()
+    {
+        // Check authentication
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+
+        $userRole = session()->get('role_name');
+        $userId = session()->get('user_id');
+
+        // Get basic statistics without complex queries first
+        $stats = [
+            'total_sessions' => $this->counselingModel->countAll(),
+            'today_sessions' => 0, // Simplified for now
+            'pending_sessions' => 0, // Simplified for now
+            'urgent_sessions' => 0, // Simplified for now
+        ];
+
+        $categories = $this->categoryModel->findAll();
+
+        // Empty arrays for now to avoid errors
+        $recentSessions = [];
+        $upcomingSessions = [];
+
+        $data = [
+            'title' => 'Dashboard Bimbingan Konseling',
+            'user_role' => $userRole,
+            'recent_sessions' => $recentSessions,
+            'upcoming_sessions' => $upcomingSessions,
+            'stats' => $stats,
+            'categories' => $categories
+        ];
+
+        return view('counseling/index', $data);
+    }
+
+    public function sessions()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+
+        $userRole = session()->get('role_name');
+        $userId = session()->get('user_id');
+
+        // Get all sessions based on role
+        if ($userRole === 'guru_bk') {
+            $sessions = $this->counselingModel->getSessionsByCounselor($userId);
+        } elseif ($userRole === 'super_admin' || $userRole === 'kepala_sekolah') {
+            $sessions = $this->counselingModel->getSessionsWithDetails();
+        } else {
+            return redirect()->to('/counseling')->with('error', 'Akses ditolak!');
+        }
+
+        $data = [
+            'title' => 'Sesi Konseling',
+            'sessions' => $sessions,
+            'user_role' => $userRole
+        ];
+
+        return view('counseling/sessions', $data);
+    }
+
+    public function create()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+
+        $userRole = session()->get('role_name');
+        if (!in_array($userRole, ['guru_bk', 'super_admin'])) {
+            return redirect()->to('/counseling')->with('error', 'Akses ditolak!');
+        }
+
+        $students = $this->studentModel->findAll();
+        $categories = $this->categoryModel->findAll();
+        $counselors = $this->userModel->where('role_id', 3)->findAll(); // guru_bk role
+
+        $data = [
+            'title' => 'Buat Sesi Konseling Baru',
+            'students' => $students,
+            'categories' => $categories,
+            'counselors' => $counselors
+        ];
+
+        return view('counseling/create', $data);
+    }
+
+    public function store()
+    {
+        if (!session()->get('isLoggedIn')) {
+            return redirect()->to('/login');
+        }
+
+        $userRole = session()->get('role_name');
+        if (!in_array($userRole, ['guru_bk', 'super_admin'])) {
+            return redirect()->to('/counseling')->with('error', 'Akses ditolak!');
+        }
+
+        $validation = \Config\Services::validation();
+        
+        $validation->setRules([
+            'student_id' => 'required|integer',
+            'category_id' => 'required|integer',
+            'title' => 'required|min_length[3]|max_length[255]',
+            'description' => 'required|min_length[10]',
+            'session_date' => 'required',
+            'is_urgent' => 'in_list[0,1]'
+        ]);
+
+        if (!$validation->withRequest($this->request)->run()) {
+            return redirect()->back()->withInput()->with('errors', $validation->getErrors());
+        }
+
+        $data = [
+            'student_id' => $this->request->getPost('student_id'),
+            'counselor_id' => session()->get('user_id'),
+            'category_id' => $this->request->getPost('category_id'),
+            'title' => $this->request->getPost('title'),
+            'description' => $this->request->getPost('description'),
+            'session_date' => $this->request->getPost('session_date'),
+            'status' => 'scheduled',
+            'is_urgent' => $this->request->getPost('is_urgent') ? 1 : 0
+        ];
+
+        if ($this->counselingModel->insert($data)) {
+            return redirect()->to('/counseling/sessions')->with('success', 'Sesi konseling berhasil dibuat!');
+        } else {
+            return redirect()->back()->withInput()->with('error', 'Gagal membuat sesi konseling!');
+        }
+    }
+}
