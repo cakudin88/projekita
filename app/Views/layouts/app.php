@@ -303,6 +303,12 @@
             <a href="/counseling-requests" class="nav-link <?= strpos(uri_string(), 'counseling-requests') === 0 ? 'active' : '' ?>">
                 <i class="fas fa-envelope-open-text"></i>Permintaan Konseling
             </a>
+            <a href="/chat" class="nav-link <?= strpos(uri_string(), 'chat') === 0 ? 'active' : '' ?>">
+                <i class="fas fa-comments"></i>Chat Siswa
+            </a>
+            <a href="/incident-reports" class="nav-link <?= strpos(uri_string(), 'incident-reports') === 0 ? 'active' : '' ?>">
+                <i class="fas fa-exclamation-triangle"></i>Laporan Kejadian
+            </a>
             <?php endif; ?>
 
             <?php if (session()->get('role_name') == 'wali_murid'): ?>
@@ -329,6 +335,21 @@
             <a href="/my-schedule" class="nav-link">
                 <i class="fas fa-calendar"></i>Jadwal Pelajaran
             </a>
+            <hr class="text-white-50 my-3">
+            <div class="px-3 mb-2">
+                <small class="text-white-50 text-uppercase">Konseling</small>
+            </div>
+            <a href="/counseling-requests" class="nav-link <?= strpos(uri_string(), 'counseling-requests') === 0 ? 'active' : '' ?>">
+                <i class="fas fa-envelope-open-text"></i>Permintaan Konseling
+            </a>
+            <a href="/chat" class="nav-link <?= strpos(uri_string(), 'chat') === 0 ? 'active' : '' ?>">
+                <i class="fas fa-comments"></i>Chat Guru BK
+            </a>
+            <?php if (session()->get('can_report_incident')): ?>
+            <a href="/incident-reports" class="nav-link <?= strpos(uri_string(), 'incident-reports') === 0 ? 'active' : '' ?>">
+                <i class="fas fa-exclamation-triangle"></i>Lapor Kejadian
+            </a>
+            <?php endif; ?>
             <?php endif; ?>
         </nav>
     </div>
@@ -349,11 +370,11 @@
                             <span><?= session()->get('full_name') ?></span>
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end">
-                            <li><h6 class="dropdown-header"><?= session()->get('role_name') ?></h6></li>
-                            <li><a class="dropdown-item" href="/profile"><i class="fas fa-user me-2"></i>Profile</a></li>
+                            <li><h6 class="dropdown-header"><?= ucwords(str_replace('_', ' ', session()->get('role_name'))) ?></h6></li>
+                            <li><a class="dropdown-item" href="/profile"><i class="fas fa-user me-2"></i>Profil</a></li>
                             <li><a class="dropdown-item" href="#"><i class="fas fa-cog me-2"></i>Pengaturan</a></li>
                             <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Logout</a></li>
+                            <li><a class="dropdown-item text-danger" href="/logout"><i class="fas fa-sign-out-alt me-2"></i>Keluar</a></li>
                         </ul>
                     </div>
                 </div>

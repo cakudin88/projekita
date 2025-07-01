@@ -33,6 +33,12 @@ $routes->get('/debug/test', 'TestController::testCounseling');
 $routes->get('/debug/users', 'TestController::testUsers');
 $routes->get('/debug', 'DebugController::index');
 $routes->get('/debug/check-counseling', 'DebugController::checkCounseling');
+$routes->get('/debug/students', 'DebugController::checkStudentData');
+$routes->get('/debug/dashboard', 'DebugController::dashboard');
+
+// Debug routes
+$routes->get('/debug', 'DebugTest::index');
+$routes->get('/debug/test', 'DebugTest::testView');
 
 // Authentication routes
 $routes->get('/login', 'AuthController::login');
@@ -66,6 +72,19 @@ $routes->get('/teachers', 'TeachersController::index');
 $routes->get('/counseling/edit/(:num)', 'BKController::edit/$1');
 $routes->post('/counseling/update/(:num)', 'BKController::update/$1');
 $routes->delete('/counseling/delete/(:num)', 'BKController::delete/$1');
+
+    // === CHAT & INCIDENT REPORT ROUTES ===
+    // Chat: murid ke guru_bk, guru_bk ke murid
+    $routes->get('/chat', 'ChatController::index');
+    $routes->get('/chat/(:num)', 'ChatController::index/$1');
+    $routes->post('/chat/send', 'ChatController::send');
+
+    // Incident report: murid (khusus yang boleh), guru_bk (manage)
+    $routes->get('/incident-reports', 'IncidentReportController::index');
+    $routes->get('/incident-reports/create', 'IncidentReportController::create');
+    $routes->post('/incident-reports/create', 'IncidentReportController::create');
+    $routes->get('/incident-reports/review/(:num)', 'IncidentReportController::review/$1');
+    $routes->post('/incident-reports/review/(:num)', 'IncidentReportController::review/$1');
 
 // Dashboard routes (protected)
 $routes->group('', ['filter' => 'auth'], function($routes) {
@@ -116,8 +135,40 @@ $routes->group('admin', ['filter' => 'admin'], function($routes) {
 $routes->get('/appointments', 'AppointmentController::index');
 
 // Counseling Request routes
+// Counseling Requests Routes (Role-based)
 $routes->get('/counseling-requests', 'CounselingRequestController::index');
+$routes->get('/counseling-requests/status', 'CounselingRequestController::status');
 $routes->get('/counseling-requests/create', 'CounselingRequestController::create');
 $routes->post('/counseling-requests/store', 'CounselingRequestController::store');
+$routes->get('/counseling-requests/manage-list', 'CounselingRequestController::manage_list');
+$routes->get('/counseling-requests/manage/(:num)', 'CounselingRequestController::manage/$1');
 $routes->post('/counseling-requests/approve/(:num)', 'CounselingRequestController::approve/$1');
-$routes->post('/counseling-requests/decline/(:num)', 'CounselingRequestController::decline/$1');
+$routes->post('/counseling-requests/reject/(:num)', 'CounselingRequestController::reject/$1');
+
+// Dashboard routes
+$routes->get('/dashboard/lightning', 'DashboardController::lightning', ['filter' => 'auth']);
+
+// Dashboard debug routes
+$routes->get('/dashboard/debug', 'DashboardController::debug', ['filter' => 'auth']);
+
+// Dashboard cache management
+$routes->get('/dashboard/clear-cache', 'DashboardController::clearCache', ['filter' => 'auth']);
+$routes->get('/dashboard/clearCache', 'DashboardController::clearCache');
+
+// Performance optimization routes
+$routes->get('/optimize', 'OptimizeController::index', ['filter' => 'auth']);
+$routes->get('/optimize/status', 'OptimizeController::status', ['filter' => 'auth']);
+
+// Performance testing routes (development only)
+$routes->get('/performance', 'PerformanceTestController::index', ['filter' => 'auth']);
+$routes->get('/performance/benchmark', 'PerformanceTestController::benchmark', ['filter' => 'auth']);
+
+// Database testing routes
+$routes->get('/db-test', 'DatabaseTestController::index');
+
+// Database fix route (temporary)
+
+// User list route (temporary for development)
+$routes->get('/users/list', 'UserListController::listUsers');
+
+

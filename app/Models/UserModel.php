@@ -14,7 +14,7 @@ class UserModel extends Model
     protected $protectFields    = true;
     protected $allowedFields    = [
         'username', 'email', 'password', 'full_name', 'phone', 'address', 
-        'role_id', 'is_active', 'avatar'
+        'role_id', 'is_active', 'avatar', 'can_report_incident'
     ];
 
     protected bool $allowEmptyInserts = false;
@@ -69,8 +69,10 @@ class UserModel extends Model
     {
         return $this->select('users.*, roles.name as role_name')
                     ->join('roles', 'roles.id = users.role_id')
-                    ->where('users.username', $login)
-                    ->orWhere('users.email', $login)
+                    ->groupStart()
+                        ->where('users.username', $login)
+                        ->orWhere('users.email', $login)
+                    ->groupEnd()
                     ->where('users.is_active', 1)
                     ->first();
     }

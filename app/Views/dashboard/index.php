@@ -8,13 +8,13 @@
             <div>
                 <h1 class="h3 mb-1">Selamat Datang, <?= session()->get('full_name') ?>!</h1>
                 <p class="text-muted mb-0">
-                    Anda login sebagai <strong><?= ucwords(str_replace('_', ' ', session()->get('role_name'))) ?></strong>
+                    Anda login sebagai <strong><?= function_exists('role_name_id') ? role_name_id(session()->get('role_name')) : ucwords(str_replace('_', ' ', session()->get('role_name'))) ?></strong>
                 </p>
             </div>
             <div class="text-end">
                 <small class="text-muted">
                     <i class="fas fa-calendar me-1"></i>
-                    <?= date('l, d F Y') ?>
+                    <?= function_exists('format_date_id') ? format_date_id(date('Y-m-d'), 'l, d F Y') : date('l, d F Y') ?>
                 </small>
             </div>
         </div>
@@ -102,7 +102,7 @@
                     </tr>
                     <tr>
                         <td><strong>Role</strong></td>
-                        <td>: <?= ucwords(str_replace('_', ' ', session()->get('role_name'))) ?></td>
+                        <td>: <?= function_exists('role_name_id') ? role_name_id(session()->get('role_name')) : ucwords(str_replace('_', ' ', session()->get('role_name'))) ?></td>
                     </tr>
                 </table>
             </div>

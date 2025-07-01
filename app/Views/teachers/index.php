@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/app') ?>
+<?= $this->extend('layouts/fast') ?>
 <?= $this->section('content') ?>
 <div class="container py-4">
     <h1 class="mb-3"><i class="fas fa-chalkboard-teacher me-2"></i>Data Guru</h1>

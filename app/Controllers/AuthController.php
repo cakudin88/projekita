@@ -59,7 +59,8 @@ class AuthController extends BaseController
                 'role_id' => $user['role_id'],
                 'role_name' => $user['role_name'],
                 'avatar' => $user['avatar'],
-                'isLoggedIn' => true
+                'isLoggedIn' => true,
+                'can_report_incident' => isset($user['can_report_incident']) ? $user['can_report_incident'] : 0
             ];
             
             session()->set($sessionData);
