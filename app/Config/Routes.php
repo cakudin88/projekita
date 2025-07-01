@@ -9,37 +9,6 @@ use CodeIgniter\Router\RouteCollection;
 // Default redirect to login
 $routes->get('/', 'AuthController::login');
 
-// Simple test route
-$routes->get('/test-simple', function() {
-    return 'Simple route working!';
-});
-
-$routes->get('/test-basic', 'TestBasicController::index');
-$routes->get('/test-base', 'TestBaseController::index');
-
-// BK Controller routes
-$routes->get('/bk', 'BKController::index');
-$routes->get('/bk/test', 'BKController::testModel');
-$routes->get('/bk/dashboard', 'BKController::dashboard');
-
-// Debug routes (without auth filter)
-$routes->get('/debug/counseling', 'CounselingController::index');
-$routes->get('/debug/counseling-simple', 'CounselingController::simple');
-$routes->get('/debug/counseling-category', 'CounselingController::testCategoryModel');
-$routes->get('/debug/counseling-models', 'CounselingController::testModels');
-$routes->get('/debug/counseling-dashboard', 'CounselingController::dashboard');
-$routes->get('/debug/simple-counseling', 'SimpleCounselingController::index');
-$routes->get('/debug/test', 'TestController::testCounseling');
-$routes->get('/debug/users', 'TestController::testUsers');
-$routes->get('/debug', 'DebugController::index');
-$routes->get('/debug/check-counseling', 'DebugController::checkCounseling');
-$routes->get('/debug/students', 'DebugController::checkStudentData');
-$routes->get('/debug/dashboard', 'DebugController::dashboard');
-
-// Debug routes
-$routes->get('/debug', 'DebugTest::index');
-$routes->get('/debug/test', 'DebugTest::testView');
-
 // Authentication routes
 $routes->get('/login', 'AuthController::login');
 $routes->post('/login-process', 'AuthController::loginProcess');
@@ -91,21 +60,15 @@ $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('/dashboard', 'DashboardController::index');
     $routes->get('/profile', 'DashboardController::profile');
     
-    // Test routes
-    $routes->get('/test/counseling', 'TestController::testCounseling');
-    
     // BK/Counseling routes - using BKController
     $routes->get('/counseling', 'BKController::dashboard');
-    $routes->get('/counseling/debug', 'BKController::debugView');
-    $routes->get('/counseling/simple', 'BKController::simpleHtml');
-    $routes->get('/counseling/test-layout', 'BKController::testLayout');
-    $routes->get('/counseling/debug-data', 'BKController::debugData');
-    $routes->get('/counseling/minimal', 'BKController::minimalDashboard');
-    $routes->get('/counseling/test-dashboard', 'BKController::testSimpleDashboard');
     $routes->get('/counseling/sessions', 'BKController::sessions');
     $routes->get('/counseling/create', 'BKController::create');
-    $routes->get('/counseling/test', 'BKController::testModel');
-    $routes->get('/counseling-test', 'TestBKController::index');
+    $routes->get('/counseling/records', 'BKController::records');
+    $routes->get('/counseling/records/student/(:num)', 'BKController::studentRecords/$1');
+    $routes->get('/counseling/reports', 'BKController::reports');
+    $routes->get('/counseling/export', 'BKController::exportReports');
+    $routes->get('/counseling/api/stats', 'BKController::apiStats');
     
     // CRUD routes for counseling sessions
     $routes->post('/counseling/store', 'BKController::store');
