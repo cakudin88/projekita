@@ -42,23 +42,29 @@ $routes->get('/counseling/edit/(:num)', 'BKController::edit/$1');
 $routes->post('/counseling/update/(:num)', 'BKController::update/$1');
 $routes->delete('/counseling/delete/(:num)', 'BKController::delete/$1');
 
-    // === CHAT & INCIDENT REPORT ROUTES ===
-    // Chat: murid ke guru_bk, guru_bk ke murid
-    $routes->get('/chat', 'ChatController::index');
-    $routes->get('/chat/(:num)', 'ChatController::index/$1');
-    $routes->post('/chat/send', 'ChatController::send');
+// === CHAT & INCIDENT REPORT ROUTES ===
+// Chat: murid ke guru_bk, guru_bk ke murid
+$routes->get('/chat', 'ChatController::index');
+$routes->get('/chat/(:num)', 'ChatController::index/$1');
+$routes->post('/chat/send', 'ChatController::send');
 
-    // Incident report: murid (khusus yang boleh), guru_bk (manage)
-    $routes->get('/incident-reports', 'IncidentReportController::index');
-    $routes->get('/incident-reports/create', 'IncidentReportController::create');
-    $routes->post('/incident-reports/create', 'IncidentReportController::create');
-    $routes->get('/incident-reports/review/(:num)', 'IncidentReportController::review/$1');
-    $routes->post('/incident-reports/review/(:num)', 'IncidentReportController::review/$1');
+// Incident report: murid (khusus yang boleh), guru_bk (manage)
+$routes->get('/incident-reports', 'IncidentReportController::index');
+$routes->get('/incident-reports/create', 'IncidentReportController::create');
+$routes->post('/incident-reports/create', 'IncidentReportController::create');
+$routes->get('/incident-reports/review/(:num)', 'IncidentReportController::review/$1');
+$routes->post('/incident-reports/review/(:num)', 'IncidentReportController::review/$1');
 
 // Dashboard routes (protected)
 $routes->group('', ['filter' => 'auth'], function($routes) {
     $routes->get('/dashboard', 'DashboardController::index');
+    
+    // --- RUTE UNTUK PROFIL PENGGUNA ---
     $routes->get('/profile', 'DashboardController::profile');
+    $routes->post('/profile/update', 'DashboardController::updateProfile');
+    $routes->post('/profile/change-password', 'DashboardController::changePassword');
+    $routes->post('/profile/upload-avatar', 'DashboardController::uploadAvatar');
+    // ------------------------------------
     
     // BK/Counseling routes - using BKController
     $routes->get('/counseling', 'BKController::dashboard');
@@ -133,5 +139,3 @@ $routes->get('/db-test', 'DatabaseTestController::index');
 
 // User list route (temporary for development)
 $routes->get('/users/list', 'UserListController::listUsers');
-
-

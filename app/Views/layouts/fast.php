@@ -23,7 +23,12 @@
         .navbar{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.1);padding:.5rem 1rem}
         .content-area{padding:1rem}
         .stats-card{background:linear-gradient(135deg,var(--primary),var(--secondary));color:#fff;border-radius:8px;padding:1.25rem;margin-bottom:1rem;transition:transform .15s ease;box-shadow:0 2px 4px rgba(0,0,0,.1)}
+        .stats-card.bg-success{background:linear-gradient(135deg,var(--success),#059669)!important}
+        .stats-card.bg-warning{background:linear-gradient(135deg,var(--warning),#d97706)!important}
+        .stats-card.bg-info{background:linear-gradient(135deg,#06b6d4,#0891b2)!important}
+        .stats-card.bg-danger{background:linear-gradient(135deg,#dc2626,#b91c1c)!important}
         .stats-card:hover{transform:translateY(-2px)}
+        .schedule-time .badge{font-size:0.9rem;padding:8px 12px}
         .card{border:none;border-radius:8px;box-shadow:0 1px 3px rgba(0,0,0,.1)}
         .nav-link{transition:background-color .15s ease}
         .nav-link:hover{background:rgba(255,255,255,.1)}
@@ -84,7 +89,7 @@
     <!-- Optimized Sidebar -->
     <div class="sidebar text-white" id="sidebar">
         <div class="p-3 border-bottom border-white-50">
-            <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>SMS</h5>
+            <h5 class="mb-0"><i class="fas fa-graduation-cap me-2"></i>SIMAKLAH</h5>
             <small class="text-white-50">Sistem Manajemen Sekolah</small>
         </div>
         
@@ -205,9 +210,13 @@
                 
                 <div class="dropdown">
                     <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" data-bs-toggle="dropdown">
-                        <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width:32px;height:32px">
-                            <?= strtoupper(substr(session()->get('full_name'), 0, 1)) ?>
-                        </div>
+                        <?php if (!empty(session()->get('avatar'))): ?>
+                            <img src="/uploads/avatars/<?= esc(session()->get('avatar')) ?>" alt="Avatar" class="rounded-circle me-2" style="width:32px;height:32px;object-fit:cover">
+                        <?php else: ?>
+                            <div class="bg-primary text-white rounded-circle d-flex align-items-center justify-content-center me-2" style="width:32px;height:32px">
+                                <?= strtoupper(substr(session()->get('full_name'), 0, 1)) ?>
+                            </div>
+                        <?php endif; ?>
                         <span><?= session()->get('full_name') ?></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-end">

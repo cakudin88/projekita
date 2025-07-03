@@ -238,7 +238,7 @@
     <!-- Sidebar -->
     <div class="sidebar" id="sidebar">
         <div class="sidebar-header">
-            <h4><i class="fas fa-graduation-cap me-2"></i>SMS</h4>
+            <h4><i class="fas fa-graduation-cap me-2"></i>SIMAKLAH</h4>
             <small class="text-white-50">Sistem Manajemen Sekolah</small>
         </div>
         <nav class="sidebar-nav">
@@ -286,10 +286,7 @@
             <a href="/counseling/sessions" class="nav-link <?= uri_string() == 'counseling/sessions' ? 'active' : '' ?>">
                 <i class="fas fa-comments"></i>Sesi Konseling
             </a>
-            <?php if (in_array(session()->get('role_name'), ['guru_bk', 'super_admin'])): ?>
-            <a href="/counseling/create" class="nav-link <?= uri_string() == 'counseling/create' ? 'active' : '' ?>">
-                <i class="fas fa-plus-circle"></i>Sesi Baru
-            </a>
+
             <?php endif; ?>
             <a href="/counseling/records" class="nav-link <?= uri_string() == 'counseling/records' ? 'active' : '' ?>">
                 <i class="fas fa-folder-open"></i>Rekam Jejak

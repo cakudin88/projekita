@@ -1,3 +1,7 @@
+<?= $this->extend('layouts/fast') ?>
+
+<?= $this->section('content') ?>
+
 <!-- Daftar laporan kejadian murid -->
 <h3>Laporan Kejadian Saya</h3>
 <a href="/incident-reports/create">+ Buat Laporan Baru</a>
@@ -11,3 +15,5 @@
 </tr>
 <?php endforeach; ?>
 </table>
+
+<?= $this->endSection() ?>

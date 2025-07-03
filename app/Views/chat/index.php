@@ -1,3 +1,7 @@
+<?= $this->extend('layouts/fast') ?>
+
+<?= $this->section('content') ?>
+
 <!-- Chat view -->
 <h3>Chat dengan <?= esc($otherUser['full_name']) ?></h3>
 <div style="border:1px solid #ccc; padding:10px; height:300px; overflow-y:auto;">
@@ -14,3 +18,5 @@
     <input type="text" name="message" placeholder="Tulis pesan..." required style="width:80%;">
     <button type="submit">Kirim</button>
 </form>
+
+<?= $this->endSection() ?>

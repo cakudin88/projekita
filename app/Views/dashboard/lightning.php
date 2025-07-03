@@ -1,4 +1,4 @@
-<?= $this->extend('layouts/minimal') ?>
+<?= $this->extend('layouts/fast') ?>
 
 <?= $this->section('content') ?>
 

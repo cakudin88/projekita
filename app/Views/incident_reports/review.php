@@ -1,3 +1,7 @@
+<?= $this->extend('layouts/fast') ?>
+
+<?= $this->section('content') ?>
+
 <!-- Review laporan kejadian oleh guru BK -->
 <h3>Review Laporan Kejadian</h3>
 <p><b>Deskripsi:</b> <?= esc($report['description']) ?></p>
@@ -12,3 +16,5 @@
     </label>
     <button type="submit">Simpan</button>
 </form>
+
+<?= $this->endSection() ?>

@@ -1,3 +1,7 @@
+<?= $this->extend('layouts/fast') ?>
+
+<?= $this->section('content') ?>
+
 <!-- Daftar semua laporan untuk guru BK -->
 <h3>Daftar Laporan Kejadian</h3>
 <table border="1" cellpadding="5">
@@ -12,3 +16,5 @@
 </tr>
 <?php endforeach; ?>
 </table>
+
+<?= $this->endSection() ?>
